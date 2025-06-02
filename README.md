@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Pratyay360/gemini-search/blob/main/LICENSE">
+  <a href="https://github.com/Pratyay360/gemini-search/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/License-GPL%203.0-blue.svg?style=flat-square&logo=gnu&logoColor=white" alt="License: GPL-3.0" />
   </a>
   <a href="https://github.com/Pratyay360/gemini-search/releases/latest">
@@ -244,7 +244,7 @@ We welcome all contributions—bug reports, features, documentation, and code!
 
 ## 📄 License
 
-This project is licensed under the [GPL-3.0 License](https://github.com/Pratyay360/gemini-search/blob/main/LICENSE).
+This project is licensed under the [GPL-3.0 License](https://github.com/Pratyay360/gemini-search/blob/master/LICENSE).
 
 ---
 
