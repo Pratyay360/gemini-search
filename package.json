@@ -25,12 +25,12 @@
     "copyfiles": "^2.4.1",
     "cross-zip-cli": "^1.0.0",
     "eslint": "^8.57.1",
-    "rimraf": "^5.0.1",
+    "rimraf": "^5.0.10",
     "typescript": "^5.8.3"
   },
   "author": "Pratyay 360",
   "license": "GPL-3.0-or-later",
-  "repository": { 
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/Pratyay360/gemini-search.git"
   },
