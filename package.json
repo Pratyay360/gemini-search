@@ -10,7 +10,13 @@
     "dev": "tsc --watch",
     "prebuild": "npm run clean",
     "copy-assets": "copyfiles -u 0 manifest.json dist/ && copyfiles -u 1 icons/**/* dist/icons",
-    "package": "cross-zip dist gemini-search.zip"
+    "package": "cross-zip dist gemini-search.zip",
+    "release": "npm run build && npm run package",
+    "version:patch": "npm run version:update -- patch",
+    "version:minor": "npm run version:update -- minor",
+    "version:major": "npm run version:update -- major",
+    "version:update": "node scripts/update-version.js",
+    "prepare-release": "npm run version:patch && npm run release && git add manifest.json package.json && git commit -m \"chore: release v$(node -p 'require(\"./manifest.json\").version')\" && git push"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.326",

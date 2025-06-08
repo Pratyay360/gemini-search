@@ -85,6 +85,20 @@ function handleSearch(query: string): void {
   }
 }
 
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.create({
+    id: "searchWithGemini",
+    title: "Search with Gemini",
+    contexts: ["selection"],
+  });
+});
+
+// Handle context menu click
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "searchWithGemini" && info.selectionText) {
+    handleSearch(info.selectionText);
+  }
+});
 // Add an action listener to make the extension button do something
 chrome.action.onClicked.addListener(() => {
   chrome.tabs.create({ url: "https://gemini.google.com/app" });
