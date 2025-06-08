@@ -19,12 +19,12 @@
     "prepare-release": "npm run version:patch && npm run release && git add manifest.json package.json && git commit -m \"chore: release v$(node -p 'require(\"./manifest.json\").version')\" && git push"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.326",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@types/cross-zip": "^4.0.2",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
+    "chrome-types": "^0.1.353",
     "copyfiles": "^2.4.1",
-    "cross-zip-cli": "^1.0.0",
-    "eslint": "^8.57.1",
+    "eslint": "^9.28.0",
     "rimraf": "^5.0.10",
     "typescript": "^5.8.3"
   },
