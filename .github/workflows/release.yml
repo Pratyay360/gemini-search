@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        persist-credentials: false # disables default token for push protection issues
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -53,10 +55,12 @@ jobs:
         git tag ${{ steps.get_version.outputs.version }}
         git push origin ${{ steps.get_version.outputs.version }}
       env:
+        # Uses the default token automatically if permissions are correct
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Create Release
       if: steps.check_tag.outputs.exists == 'false'
+      id: create_release # <-- Added id for output reference
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
