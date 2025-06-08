@@ -1,4 +1,4 @@
-chrome.storage.local.get(["gemini_query"], (result) => {
+chrome.storage.local.get(["gemini_query"], (result: { [key: string]: any }) => {
   const query = result.gemini_query;
   if (!query) return;
 

@@ -9,31 +9,37 @@ const bangRedirects: Record<string, string> = {
 };
 
 // Setup URL pattern matching and handler for omnibox
-chrome.omnibox.onInputEntered.addListener((text) => {
+chrome.omnibox.onInputEntered.addListener((text: string) => {
   handleSearch(text);
 });
 
 // Handle navigation events via tabs API
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  // Only process complete loads with URLs
-  if (changeInfo.status === "complete" && tab.url) {
-    try {
-      const url = new URL(tab.url);
+chrome.tabs.onUpdated.addListener(
+  (
+    tabId: number,
+    changeInfo: any,
+    tab: chrome.tabs.Tab
+  ) => {
+    // Only process complete loads with URLs
+    if (changeInfo.status === "complete" && tab.url) {
+      try {
+        const url = new URL(tab.url);
 
-      // Check if this is a Gemini URL with a query
-      if (
-        url.hostname === "gemini.google.com" &&
-        url.pathname.startsWith("/app") &&
-        url.searchParams.has("q")
-      ) {
-        const query = url.searchParams.get("q")!;
-        processQuery(query, tabId);
+        // Check if this is a Gemini URL with a query
+        if (
+          url.hostname === "gemini.google.com" &&
+          url.pathname.startsWith("/app") &&
+          url.searchParams.has("q")
+        ) {
+          const query = url.searchParams.get("q")!;
+          processQuery(query, tabId);
+        }
+      } catch (e) {
+        console.error("Error processing URL", e);
       }
-    } catch (e) {
-      console.error("Error processing URL", e);
     }
   }
-});
+);
 
 // Process queries from URL parameters or omnibox
 function processQuery(query: string, tabId: number): void {
@@ -94,11 +100,16 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 // Handle context menu click
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === "searchWithGemini" && info.selectionText) {
-    handleSearch(info.selectionText);
+chrome.contextMenus.onClicked.addListener(
+  (
+    info: chrome.contextMenus.OnClickData,
+    tab?: chrome.tabs.Tab
+  ) => {
+    if (info.menuItemId === "searchWithGemini" && info.selectionText) {
+      handleSearch(info.selectionText);
+    }
   }
-});
+);
 // Add an action listener to make the extension button do something
 chrome.action.onClicked.addListener(() => {
   chrome.tabs.create({ url: "https://gemini.google.com/app" });
