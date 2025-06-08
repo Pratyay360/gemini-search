@@ -1,11 +1,14 @@
 name: Auto Release
-
 on:
   push:
     branches: [ main, master ]
     tags:
       - 'v*'
 
+# Add permissions for the workflow
+permissions:
+  contents: write
+  
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -14,7 +17,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        persist-credentials: false # disables default token for push protection issues
+        # Remove persist-credentials: false to allow pushing
+        fetch-depth: 0  # Fetch full history for tagging
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -55,18 +59,15 @@ jobs:
         git tag ${{ steps.get_version.outputs.version }}
         git push origin ${{ steps.get_version.outputs.version }}
       env:
-        # Uses the default token automatically if permissions are correct
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Create Release
       if: steps.check_tag.outputs.exists == 'false'
-      id: create_release # <-- Added id for output reference
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      id: create_release
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: ${{ steps.get_version.outputs.version }}
-        release_name: Release ${{ steps.get_version.outputs.version }}
+        tag: ${{ steps.get_version.outputs.version }}
+        name: Release ${{ steps.get_version.outputs.version }}
         body: |
           ## What's Changed
           
@@ -84,19 +85,10 @@ jobs:
           - Privacy-first local processing
           
           **Full Changelog**: https://github.com/${{ github.repository }}/commits/${{ steps.get_version.outputs.version }}
+        artifacts: ./gemini-search.zip
         draft: false
         prerelease: false
-        
-    - name: Upload Release Asset
-      if: steps.check_tag.outputs.exists == 'false'
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./gemini-search.zip
-        asset_name: gemini-search.zip
-        asset_content_type: application/zip
+        token: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Update existing release
       if: steps.check_tag.outputs.exists == 'true'
